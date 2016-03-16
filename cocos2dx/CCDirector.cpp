@@ -273,6 +273,9 @@ void CCDirector::drawScene(void)
         setNextScene();
     }
 
+    if( m_mapOpenGLViews.size() > 0 )
+        setProjection(m_eProjection);
+
     kmGLPushMatrix();
 
     // draw the scene
@@ -311,6 +314,29 @@ void CCDirector::drawScene(void)
     std::map<std::string,tagGLViewInfo>::iterator iter_end = m_mapOpenGLViews.end();
     for( ; iter != iter_end; ++iter )
     {
+        CCEGLView* pOpenGLView = iter->second.pGLView;
+
+        CCSize kWinSizeInPoints = pOpenGLView->getDesignResolutionSize();
+        float zeye = (kWinSizeInPoints.height / 1.1566f);
+
+        kmMat4 matrixPerspective, matrixLookup;
+
+        kmGLMatrixMode(KM_GL_PROJECTION);
+        kmGLLoadIdentity();
+
+        kmMat4PerspectiveProjection( &matrixPerspective, 60, (GLfloat)size.width/size.height, 0.1f, zeye*2);
+
+        kmGLMultMatrix(&matrixPerspective);
+
+        kmGLMatrixMode(KM_GL_MODELVIEW);
+        kmGLLoadIdentity();
+        kmVec3 eye, center, up;
+        kmVec3Fill( &eye, kWinSizeInPoints.width/2, kWinSizeInPoints.height/2, zeye );
+        kmVec3Fill( &center, kWinSizeInPoints.width/2, kWinSizeInPoints.height/2, 0.0f );
+        kmVec3Fill( &up, 0.0f, 1.0f, 0.0f);
+        kmMat4LookAt(&matrixLookup, &eye, &center, &up);
+        kmGLMultMatrix(&matrixLookup);
+
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         kmGLPushMatrix();
@@ -319,7 +345,7 @@ void CCDirector::drawScene(void)
 
         kmGLPopMatrix();
 
-        iter->second.pGLView->swapBuffers();
+        pOpenGLView->swapBuffers();
     }
 }
 
