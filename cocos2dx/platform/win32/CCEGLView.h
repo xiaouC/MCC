@@ -39,8 +39,9 @@ class CCEGL;
 class CC_DLL CCEGLView : public CCEGLViewProtocol
 {
 public:
-    CCEGLView();
+    CCEGLView(HWND hWnd);
     virtual ~CCEGLView();
+    static CCEGLView* create(HWND hWnd=NULL);
 
     /* override functions */
     virtual bool isOpenGLReady();
@@ -53,7 +54,7 @@ public:
     void setWndProc(CUSTOM_WND_PROC proc);
 
 private:
-    virtual bool Create();
+    virtual bool Create(HWND hWnd);
     bool initGL();
     void destroyGL();
 public:
@@ -74,12 +75,6 @@ public:
 
     virtual void setViewPortInPoints(float x , float y , float w , float h);
     virtual void setScissorInPoints(float x , float y , float w , float h);
-    
-    // static function
-    /**
-    @brief    get the shared main open gl window
-    */
-    static CCEGLView* sharedOpenGLView();
 
 protected:
 
@@ -95,6 +90,8 @@ private:
     CUSTOM_WND_PROC m_wndproc;
 
     float m_fFrameZoomFactor;
+
+    bool m_bExternalWnd;
 };
 
 NS_CC_END

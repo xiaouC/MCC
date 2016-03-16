@@ -186,6 +186,7 @@ CCEGLView::CCEGLView()
 , m_wndproc(NULL)
 , m_fFrameZoomFactor(1.0f)
 , m_bSupportTouch(false)
+, m_bExternalWnd(false)
 {
     strcpy(m_szViewName, "Cocos2dxWin32");
 }
@@ -193,6 +194,18 @@ CCEGLView::CCEGLView()
 CCEGLView::~CCEGLView()
 {
 
+}
+
+CCEGLView* CCEGLView::create(HWND hWnd)
+{
+    CCEGLView* pEglView = new CCEGLView();
+    if(!pEglView->Create(hWnd))
+    {
+        delete pEglView;
+        pEglView = NULL;
+    }
+
+    return pEglView;
 }
 
 bool CCEGLView::initGL()
@@ -264,8 +277,18 @@ void CCEGLView::destroyGL()
     }
 }
 
-bool CCEGLView::Create()
+bool CCEGLView::Create(HWND hWnd)
 {
+    if (hWnd != NULL )
+    {
+        m_hWnd = hWnd;
+        m_bExternalWnd = true;
+
+        bool bRet = initGL();
+		if(!bRet) destroyGL();
+        return bRet;
+    }
+
     bool bRet = false;
     do
     {
@@ -566,8 +589,11 @@ void CCEGLView::end()
         DestroyWindow(m_hWnd);
         m_hWnd = NULL;
     }
-    s_pMainWindow = NULL;
-    UnregisterClass(kWindowClassName, GetModuleHandle(NULL));
+    if( !m_bExternalWnd )
+    {
+        s_pMainWindow = NULL;
+        UnregisterClass(kWindowClassName, GetModuleHandle(NULL));
+    }
     delete this;
 }
 
@@ -607,7 +633,7 @@ HWND CCEGLView::getHWnd()
 
 void CCEGLView::resize(int width, int height)
 {
-    if (! m_hWnd)
+    if( m_bExternalWnd || !m_hWnd )
     {
         return;
     }
@@ -664,14 +690,13 @@ float CCEGLView::getFrameZoomFactor()
 void CCEGLView::setFrameSize(float width, float height)
 {
     CCEGLViewProtocol::setFrameSize(width, height);
-
     resize(width, height); // adjust window size for menubar
     centerWindow();
 }
 
 void CCEGLView::centerWindow()
 {
-    if (! m_hWnd)
+    if( m_bExternalWnd || !m_hWnd )
     {
         return;
     }
@@ -717,20 +742,5 @@ void CCEGLView::setScissorInPoints(float x , float y , float w , float h)
               (GLsizei)(h * m_fScaleY * m_fFrameZoomFactor));
 }
 
-CCEGLView* CCEGLView::sharedOpenGLView()
-{
-    static CCEGLView* s_pEglView = NULL;
-    if (s_pEglView == NULL)
-    {
-        s_pEglView = new CCEGLView();
-		if(!s_pEglView->Create())
-		{
-			delete s_pEglView;
-			s_pEglView = NULL;
-		}
-    }
-
-    return s_pEglView;
-}
 
 NS_CC_END

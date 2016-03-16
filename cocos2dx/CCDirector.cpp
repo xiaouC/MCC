@@ -100,7 +100,9 @@ CCDirector* CCDirector::sharedDirector(void)
     return s_SharedDirector;
 }
 
-CCDirector::CCDirector(void) : m_fSpeed(1.0f)
+CCDirector::CCDirector(void)
+: m_fSpeed(1.0f)
+, m_bHasMainOpenGLView(false)
 {
 
 }
@@ -304,6 +306,21 @@ void CCDirector::drawScene(void)
     {
         calculateMPF();
     }
+
+    std::map<std::string,tagGLViewInfo>::iterator iter = m_mapOpenGLViews.begin();
+    std::map<std::string,tagGLViewInfo>::iterator iter_end = m_mapOpenGLViews.end();
+    for( ; iter != iter_end; ++iter )
+    {
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        kmGLPushMatrix();
+
+        iter->second.pRenderNode->visit();
+
+        kmGLPopMatrix();
+
+        iter->second.pGLView->swapBuffers();
+    }
 }
 
 void CCDirector::calculateDeltaTime(void)
@@ -372,7 +389,46 @@ void CCDirector::setOpenGLView(CCEGLView *pobOpenGLView)
 
         m_pobOpenGLView->setTouchDelegate(m_pTouchDispatcher);
         m_pTouchDispatcher->setDispatchEvents(true);
+
+        m_bHasMainOpenGLView = true;
     }
+}
+
+void CCDirector::addOpenGLView( const std::string& strGLViewTag, CCEGLView* pOpenGLView, CCNode* pRenderNode)
+{
+    std::map<std::string,tagGLViewInfo>::iterator iter = m_mapOpenGLViews.find( strGLViewTag );
+    if( iter != m_mapOpenGLViews.end() )
+    {
+        tagGLViewInfo vInfo;
+        vInfo.pGLView = pOpenGLView;
+        vInfo.pRenderNode = pRenderNode;
+        vInfo.pRenderNode->retain();
+        m_mapOpenGLViews[strGLViewTag] = vInfo;
+
+        if( !m_bHasMainOpenGLView )
+        {
+            // Configuration. Gather GPU info
+            CCConfiguration *conf = CCConfiguration::sharedConfiguration();
+            conf->gatherGPUInfo();
+            conf->dumpInfo();
+
+            m_obWinSizeInPoints = pOpenGLView->getDesignResolutionSize();
+
+            setGLDefaultValues();
+        }
+
+        CCSize kWinSizeInPoints = pOpenGLView->getDesignResolutionSize();
+        pOpenGLView->setViewPortInPoints(0, 0, kWinSizeInPoints.width, kWinSizeInPoints.height);
+    }
+}
+
+CCEGLView* CCDirector::getOpenGLView( const std::string& strGLViewTag )
+{
+    std::map<std::string,tagGLViewInfo>::iterator iter = m_mapOpenGLViews.find( strGLViewTag );
+    if( iter != m_mapOpenGLViews.end() )
+        return iter->second.pGLView;
+
+    return NULL;
 }
 
 void CCDirector::setViewport()
@@ -380,6 +436,16 @@ void CCDirector::setViewport()
     if (m_pobOpenGLView)
     {
         m_pobOpenGLView->setViewPortInPoints(0, 0, m_obWinSizeInPoints.width, m_obWinSizeInPoints.height);
+    }
+}
+
+void CCDirector::setViewport( const std::string& strGLViewTag )
+{
+    CCEGLView* pGLView = getOpenGLView( strGLViewTag );
+    if( pGLView != NULL )
+    {
+        CCSize kWinSizeInPoints = pGLView->getDesignResolutionSize();
+        pGLView->setViewPortInPoints(0, 0, kWinSizeInPoints.width, kWinSizeInPoints.height);
     }
 }
 
@@ -735,6 +801,15 @@ void CCDirector::purgeDirector()
     // OpenGL view
     m_pobOpenGLView->end();
     m_pobOpenGLView = NULL;
+
+    std::map<string,CCEGLView*>::iterator iter = m_mapOpenGLViews.begin();
+    std::map<string,CCEGLView*>::iterator iter_end = m_mapOpenGLViews.end();
+    for( ; iter != iter_end; ++iter )
+    {
+        iter->second.pGLView->end();
+        iter->second.pRenderNode->release();
+    }
+    m_mapOpenGLViews.clear();
 
     // delete CCDirector
     release();

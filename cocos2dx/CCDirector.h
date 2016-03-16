@@ -36,6 +36,7 @@ THE SOFTWARE.
 #include "kazmath/mat4.h"
 #include "label_nodes/CCLabelAtlas.h"
 #include "ccTypeInfo.h"
+#include <map>
 
 
 NS_CC_BEGIN
@@ -127,6 +128,9 @@ public:
     inline CCEGLView* getOpenGLView(void) { return m_pobOpenGLView; }
     void setOpenGLView(CCEGLView *pobOpenGLView);
 
+    void addOpenGLView( const std::string& strGLViewTag, CCEGLView* pOpenGLView, CCNode* pRenderNode);
+    CCEGLView* getOpenGLView( const std::string& strGLViewTag );
+
     inline bool isNextDeltaTimeZero(void) { return m_bNextDeltaTimeZero; }
     void setNextDeltaTimeZero(bool bNextDeltaTimeZero);
 
@@ -144,6 +148,7 @@ public:
     
     /** Sets the glViewport*/
     void setViewport();
+    void setViewport( const std::string& strGLViewTag );
 
     /** How many frames were called since the director started */
     
@@ -366,6 +371,14 @@ protected:
 protected:
     /* The CCEGLView, where everything is rendered */
     CCEGLView    *m_pobOpenGLView;
+
+    bool m_bHasMainOpenGLView;
+    struct tagGLViewInfo
+    {
+        CCEGLView*  pGLView;
+        CCNode*     pRenderNode;
+    }
+    std::map<string,tagGLViewInfo> m_mapOpenGLViews;
 
     double m_dAnimationInterval;
     double m_dOldAnimationInterval;
