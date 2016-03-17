@@ -20,6 +20,7 @@ class CCEGLView : public CCEGLViewProtocol{
 public:
 	CCEGLView();
 	virtual ~CCEGLView();
+    static CCEGLView* create(int hWinHandle=0) { return NULL; }
 
 	friend void keyEventHandle(int,int);
 	friend void mouseButtonEventHandle(int,int);

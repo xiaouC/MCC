@@ -21,6 +21,11 @@ class CCDirector : public CCObject
 
 	CCEGLViewProtocol* getOpenGLView(void);
 
+    void addOpenGLView( const std::string& strGLViewTag, CCEGLView* pOpenGLView, CCNode* pRenderNode);
+    CCEGLView* getOpenGLView( const std::string& strGLViewTag );
+
+    void setViewport( const std::string& strGLViewTag );
+
     CCSize getWinSize(void);
     CCSize getWinSizeInPixels(void);
 

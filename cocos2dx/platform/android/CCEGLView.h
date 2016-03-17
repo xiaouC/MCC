@@ -35,6 +35,7 @@ class CC_DLL CCEGLView : public CCEGLViewProtocol
 public:
     CCEGLView();
     virtual ~CCEGLView();
+    static CCEGLView* create(int hWinHandle=0) { return NULL; }
 
     bool    isOpenGLReady();
 

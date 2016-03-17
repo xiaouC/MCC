@@ -39,9 +39,10 @@ class CCEGL;
 class CC_DLL CCEGLView : public CCEGLViewProtocol
 {
 public:
-    CCEGLView(HWND hWnd);
+    CCEGLView();
     virtual ~CCEGLView();
-    static CCEGLView* create(HWND hWnd=NULL);
+    static CCEGLView* create(int hWinHandle=0);
+	static CCEGLView* sharedOpenGLView();
 
     /* override functions */
     virtual bool isOpenGLReady();

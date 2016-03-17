@@ -196,8 +196,9 @@ CCEGLView::~CCEGLView()
 
 }
 
-CCEGLView* CCEGLView::create(HWND hWnd)
+CCEGLView* CCEGLView::create(int hWinHandle)
 {
+    HWND hWnd = HWND(hWinHandle);
     CCEGLView* pEglView = new CCEGLView();
     if(!pEglView->Create(hWnd))
     {
@@ -206,6 +207,16 @@ CCEGLView* CCEGLView::create(HWND hWnd)
     }
 
     return pEglView;
+}
+
+CCEGLView* CCEGLView::sharedOpenGLView()
+{
+    static CCEGLView* s_pEglView = NULL;
+    if (s_pEglView == NULL)
+    {
+        s_pEglView = new CCEGLView();
+    }
+    return s_pEglView;
 }
 
 bool CCEGLView::initGL()

@@ -1,6 +1,6 @@
 /*
 ** Lua binding: Cocos2d
-** Generated automatically by tolua++-1.0.93 on Mon Dec  7 19:49:02 2015.
+** Generated automatically by tolua++-1.0.93 on Thu Mar 17 14:28:59 2016.
 */
 
 /****************************************************************************
@@ -9136,6 +9136,36 @@ static int tolua_Cocos2d_CCEGLViewProtocol_getScaleY00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* method: create of class  CCEGLView */
+#ifndef TOLUA_DISABLE_tolua_Cocos2d_CCEGLView_create00
+static int tolua_Cocos2d_CCEGLView_create00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertable(tolua_S,1,"CCEGLView",0,&tolua_err) ||
+     !tolua_isnumber(tolua_S,2,1,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  int hWinHandle = ((int)  tolua_tonumber(tolua_S,2,0));
+  {
+   CCEGLView* tolua_ret = (CCEGLView*)  CCEGLView::create(hWinHandle);
+    tolua_pushusertype(tolua_S,(void*)tolua_ret,"CCEGLView");
+  }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'create'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* method: sharedOpenGLView of class  CCEGLView */
 #ifndef TOLUA_DISABLE_tolua_Cocos2d_CCEGLView_sharedOpenGLView00
 static int tolua_Cocos2d_CCEGLView_sharedOpenGLView00(lua_State* tolua_S)
@@ -11723,6 +11753,108 @@ static int tolua_Cocos2d_CCDirector_getOpenGLView00(lua_State* tolua_S)
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'getOpenGLView'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: addOpenGLView of class  CCDirector */
+#ifndef TOLUA_DISABLE_tolua_Cocos2d_CCDirector_addOpenGLView00
+static int tolua_Cocos2d_CCDirector_addOpenGLView00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"CCDirector",0,&tolua_err) ||
+     !tolua_iscppstring(tolua_S,2,0,&tolua_err) ||
+     !tolua_isusertype(tolua_S,3,"CCEGLView",0,&tolua_err) ||
+     !tolua_isusertype(tolua_S,4,"CCNode",0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,5,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  CCDirector* self = (CCDirector*)  tolua_tousertype(tolua_S,1,0);
+  const std::string strGLViewTag = ((const std::string)  tolua_tocppstring(tolua_S,2,0));
+  CCEGLView* pOpenGLView = ((CCEGLView*)  tolua_tousertype(tolua_S,3,0));
+  CCNode* pRenderNode = ((CCNode*)  tolua_tousertype(tolua_S,4,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'addOpenGLView'", NULL);
+#endif
+  {
+   self->addOpenGLView(strGLViewTag,pOpenGLView,pRenderNode);
+   tolua_pushcppstring(tolua_S,(const char*)strGLViewTag);
+  }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'addOpenGLView'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: getOpenGLView of class  CCDirector */
+#ifndef TOLUA_DISABLE_tolua_Cocos2d_CCDirector_getOpenGLView01
+static int tolua_Cocos2d_CCDirector_getOpenGLView01(lua_State* tolua_S)
+{
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"CCDirector",0,&tolua_err) ||
+     !tolua_iscppstring(tolua_S,2,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+ {
+  CCDirector* self = (CCDirector*)  tolua_tousertype(tolua_S,1,0);
+  const std::string strGLViewTag = ((const std::string)  tolua_tocppstring(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getOpenGLView'", NULL);
+#endif
+  {
+   CCEGLView* tolua_ret = (CCEGLView*)  self->getOpenGLView(strGLViewTag);
+    tolua_pushusertype(tolua_S,(void*)tolua_ret,"CCEGLView");
+   tolua_pushcppstring(tolua_S,(const char*)strGLViewTag);
+  }
+ }
+ return 2;
+tolua_lerror:
+ return tolua_Cocos2d_CCDirector_getOpenGLView00(tolua_S);
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: setViewport of class  CCDirector */
+#ifndef TOLUA_DISABLE_tolua_Cocos2d_CCDirector_setViewport00
+static int tolua_Cocos2d_CCDirector_setViewport00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+     !tolua_isusertype(tolua_S,1,"CCDirector",0,&tolua_err) ||
+     !tolua_iscppstring(tolua_S,2,0,&tolua_err) ||
+     !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+  goto tolua_lerror;
+ else
+#endif
+ {
+  CCDirector* self = (CCDirector*)  tolua_tousertype(tolua_S,1,0);
+  const std::string strGLViewTag = ((const std::string)  tolua_tocppstring(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setViewport'", NULL);
+#endif
+  {
+   self->setViewport(strGLViewTag);
+   tolua_pushcppstring(tolua_S,(const char*)strGLViewTag);
+  }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'setViewport'.",&tolua_err);
  return 0;
 #endif
 }
@@ -67778,6 +67910,7 @@ TOLUA_API int tolua_Cocos2d_open (lua_State* tolua_S)
   tolua_endmodule(tolua_S);
   tolua_cclass(tolua_S,"CCEGLView","CCEGLView","CCEGLViewProtocol",NULL);
   tolua_beginmodule(tolua_S,"CCEGLView");
+   tolua_function(tolua_S,"create",tolua_Cocos2d_CCEGLView_create00);
    tolua_function(tolua_S,"sharedOpenGLView",tolua_Cocos2d_CCEGLView_sharedOpenGLView00);
   tolua_endmodule(tolua_S);
   tolua_cclass(tolua_S,"CCRGBAProtocol","CCRGBAProtocol","",NULL);
@@ -67904,6 +68037,9 @@ TOLUA_API int tolua_Cocos2d_open (lua_State* tolua_S)
    tolua_function(tolua_S,"isPaused",tolua_Cocos2d_CCDirector_isPaused00);
    tolua_function(tolua_S,"getTotalFrames",tolua_Cocos2d_CCDirector_getTotalFrames00);
    tolua_function(tolua_S,"getOpenGLView",tolua_Cocos2d_CCDirector_getOpenGLView00);
+   tolua_function(tolua_S,"addOpenGLView",tolua_Cocos2d_CCDirector_addOpenGLView00);
+   tolua_function(tolua_S,"getOpenGLView",tolua_Cocos2d_CCDirector_getOpenGLView01);
+   tolua_function(tolua_S,"setViewport",tolua_Cocos2d_CCDirector_setViewport00);
    tolua_function(tolua_S,"getWinSize",tolua_Cocos2d_CCDirector_getWinSize00);
    tolua_function(tolua_S,"getWinSizeInPixels",tolua_Cocos2d_CCDirector_getWinSizeInPixels00);
    tolua_function(tolua_S,"convertToGL",tolua_Cocos2d_CCDirector_convertToGL00);

@@ -86,6 +86,7 @@ class CCEGLViewProtocol
 
 class CCEGLView : public CCEGLViewProtocol
 {
+    static CCEGLView* create(int hWinHandle=0); // windows 使用
     static CCEGLView* sharedOpenGLView(void);
 };
 
