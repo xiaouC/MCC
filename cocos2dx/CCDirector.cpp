@@ -324,7 +324,7 @@ void CCDirector::drawScene(void)
         kmGLMatrixMode(KM_GL_PROJECTION);
         kmGLLoadIdentity();
 
-        kmMat4PerspectiveProjection( &matrixPerspective, 60, (GLfloat)size.width/size.height, 0.1f, zeye*2);
+        kmMat4PerspectiveProjection( &matrixPerspective, 60, (GLfloat)kWinSizeInPoints.width/kWinSizeInPoints.height, 0.1f, zeye*2);
 
         kmGLMultMatrix(&matrixPerspective);
 
@@ -828,8 +828,8 @@ void CCDirector::purgeDirector()
     m_pobOpenGLView->end();
     m_pobOpenGLView = NULL;
 
-    std::map<string,CCEGLView*>::iterator iter = m_mapOpenGLViews.begin();
-    std::map<string,CCEGLView*>::iterator iter_end = m_mapOpenGLViews.end();
+    std::map<string,tagGLViewInfo>::iterator iter = m_mapOpenGLViews.begin();
+    std::map<string,tagGLViewInfo>::iterator iter_end = m_mapOpenGLViews.end();
     for( ; iter != iter_end; ++iter )
     {
         iter->second.pGLView->end();

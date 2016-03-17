@@ -36,6 +36,7 @@ THE SOFTWARE.
 #include "kazmath/mat4.h"
 #include "label_nodes/CCLabelAtlas.h"
 #include "ccTypeInfo.h"
+#include <string>
 #include <map>
 
 
@@ -377,8 +378,8 @@ protected:
     {
         CCEGLView*  pGLView;
         CCNode*     pRenderNode;
-    }
-    std::map<string,tagGLViewInfo> m_mapOpenGLViews;
+    };
+    std::map<std::string,tagGLViewInfo> m_mapOpenGLViews;
 
     double m_dAnimationInterval;
     double m_dOldAnimationInterval;

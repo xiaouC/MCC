@@ -1,2 +1,9 @@
 *.swp
 *.o
+lib/
+cocos2dx/proj.linux/.sconsign.dblite
+cocos2dx/proj.linux/libcocos2dx.a
+cocos2dx/proj.linux/obj
+CocosDenshion/proj.linux/obj
+extensions/proj.linux/obj
+scripting/lua/proj.linux/obj
