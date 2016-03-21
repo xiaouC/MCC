@@ -423,7 +423,7 @@ void CCDirector::setOpenGLView(CCEGLView *pobOpenGLView)
 void CCDirector::addOpenGLView( const std::string& strGLViewTag, CCEGLView* pOpenGLView, CCNode* pRenderNode)
 {
     std::map<std::string,tagGLViewInfo>::iterator iter = m_mapOpenGLViews.find( strGLViewTag );
-    if( iter != m_mapOpenGLViews.end() )
+    if( iter == m_mapOpenGLViews.end() )
     {
         tagGLViewInfo vInfo;
         vInfo.pGLView = pOpenGLView;
